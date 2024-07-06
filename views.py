@@ -4,7 +4,7 @@ views = Blueprint(__name__, "views")
 
 
 @views.route("/")
-def home():
+def Rusoniatchat():
     return render_template("index.html")
 
 
