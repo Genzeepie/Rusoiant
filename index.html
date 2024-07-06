@@ -2,69 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rusoniat Chatroom</title>
-    <style>
-        #messages {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #000;
-        }
-        .message {
-            margin: 5px 0;
-        }
-    </style>
+    <title>Rusoniat Chat</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js" integrity="sha512-luMnTJZ7oEchNDZAtQhgjomP1eZefnl82ruTH/3Oj/Yu5qYtwL7+dVRccACS/Snp1lFXq188XFipHKYE75IaQQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
-<body>
-<div>
+<body style="text-align:center: font-family: Arial, serif; font size 14pt">
+<div align="center">
     <h1>Welcome to Rusoniat</h1>
     <p>Welcome to my website named Rusoniat. Well, it's not done, but I will continue to program this.
     Please give suggestions on Discord (User: genzeepieYT). This website is supposed to be a chatroom and will be one.</p>
 </div>
-<br>
-<br>
-<form id="chatForm">
-    <label>Type your username</label>
-    <input required id="username">
-    <br>
-    <br>
-    <label>Type here to chat</label>
-    <input required id="chatMessage">
-    <br>
-    <br>
-    <button type="button" id="sendButton" style="border-radius: 25px; background-color: forestgreen">Send</button>
-</form>
-<div id="messages"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var socket = io.connect("http://localhost:5000");
 
-<script>
-    document.getElementById('sendButton').addEventListener('click', function() {
-        // Get the values of the input fields
-        const username = document.getElementById('username').value;
-        const chatMessage = document.getElementById('chatMessage').value;
+        socket.on('connect', function() {
+            socket.send("User connected!");
+        });
 
-        // Check if both inputs are filled
-        if (username.trim() === '' || chatMessage.trim() === '') {
-            alert('Please fill in both fields.');
-            return;
-        }
+        socket.on('message', function(data) {
+            $('#messages').append('<p>' + data + '</p>');
+        });
 
-        // Generate the message
-        const message = `<strong>${username}:</strong> ${chatMessage}`;
-
-        // Create a new div element for the message
-        const messageDiv = document.createElement('div');
-        messageDiv.className = 'message';
-        messageDiv.innerHTML = message;
-
-        // Add the message to the messages div
-        document.getElementById('messages').appendChild(messageDiv);
-
-        // Clear the input fields
-        document.getElementById('chatForm').reset();
+        $('#sendBtn').on('click', function() {
+            socket.send($('#username').val() + ': ' + $('#message').val());
+            $('#message').val(''); // Clear the message input
+        });
     });
 </script>
 
+<div align="center">
+    <input required type="text" id="username" placeholder="Username" style="margin: 0 auto ;width: 20% ;text-align: center">
+<input required type="text" id="message" placeholder="Message" style="margin: 0 auto ;width: 20% ;text-align: center">
+<br>
+<br>
+<button id="sendBtn" style="border-radius: 25px; background-color: forestgreen; margin: 0 auto ;width: 10% ;text-align: center">Send</button>
+</div>
+<br>
+<br>
+<div id="messages" style="margin: 0 auto ;width: 60% ;text-align: Left">
+
+</div>
 </body>
 </html>
