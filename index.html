@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,24 +6,65 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Rusoniat Chatroom</title>
+    <style>
+        #messages {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #000;
+        }
+        .message {
+            margin: 5px 0;
+        }
+    </style>
 </head>
 <body>
-<div><h1>welcome to the Rusoniat</h1>
-<p>welcome to my website named Rusoniat, well its not done but i will continue to programm this
-but give suggestions in Discord User: genzeepieYT . this website is supposed to be a Chatroom and will be one.</p>
+<div>
+    <h1>Welcome to Rusoniat</h1>
+    <p>Welcome to my website named Rusoniat. Well, it's not done, but I will continue to program this.
+    Please give suggestions on Discord (User: genzeepieYT). This website is supposed to be a chatroom and will be one.</p>
 </div>
 <br>
 <br>
-<form>
-    <label>type your username</label>
-   <input required id="username">
-   <br>
-   <br>
-   <label>type here to Chat</label>
-   <input required name="gonnabeinchat">
-  <button>sent</button>
+<form id="chatForm">
+    <label>Type your username</label>
+    <input required id="username">
+    <br>
+    <br>
+    <label>Type here to chat</label>
+    <input required id="chatMessage">
+    <br>
+    <br>
+    <button type="button" id="sendButton" style="border-radius: 25px; background-color: forestgreen">Send</button>
 </form>
+<div id="messages"></div>
 
+<script>
+    document.getElementById('sendButton').addEventListener('click', function() {
+        // Get the values of the input fields
+        const username = document.getElementById('username').value;
+        const chatMessage = document.getElementById('chatMessage').value;
+
+        // Check if both inputs are filled
+        if (username.trim() === '' || chatMessage.trim() === '') {
+            alert('Please fill in both fields.');
+            return;
+        }
+
+        // Generate the message
+        const message = `<strong>${username}:</strong> ${chatMessage}`;
+
+        // Create a new div element for the message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message';
+        messageDiv.innerHTML = message;
+
+        // Add the message to the messages div
+        document.getElementById('messages').appendChild(messageDiv);
+
+        // Clear the input fields
+        document.getElementById('chatForm').reset();
+    });
+</script>
 
 </body>
 </html>
